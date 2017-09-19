@@ -1,17 +1,14 @@
 ### Scala ### 
-
 *.class
 *.log
-
 *.iml
-
 *.ipr
-
 *.iws
-
 .idea
 out
 .target
 project/
 target/
+resources/
 *.dat
+*.csv
