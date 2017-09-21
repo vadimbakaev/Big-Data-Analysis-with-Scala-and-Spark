@@ -37,8 +37,13 @@ object Extraction {
                                   ): Iterable[(Location, Double)] = {
     records.groupBy { case (_, location, _) => location }
       .mapValues { iterableOfDateWithLocationAndTemp =>
-        iterableOfDateWithLocationAndTemp.foldLeft(0d)(_ + _._3) / iterableOfDateWithLocationAndTemp.size
+        val sum = iterableOfDateWithLocationAndTemp.foldLeft(BigDecimal.decimal(0)) { case (acc, tuple) =>
+          acc + BigDecimal(tuple._3)
+        }
+
+        (sum / iterableOfDateWithLocationAndTemp.size).toDouble
       }
+      .toList
   }
 
   def stationID2LocationMap(stationFileLines: Iterator[String]): Map[(String, String), Location] = {

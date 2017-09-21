@@ -6,11 +6,11 @@ import org.scalatest.FunSuite
 
 class ExtractionTest extends FunSuite {
 
-  test("stationID2LocationMap return emptyMap") {
+  test("stationID2LocationMap should return emptyMap") {
     assert(Extraction.stationID2LocationMap(Nil.iterator).isEmpty)
   }
 
-  test("stationID2LocationMap return Map with 2 items") {
+  test("stationID2LocationMap should return Map with 2 items") {
     val input = List(
       "010013,,,",
       "724017,03707,+37.358,-078.438",
@@ -28,7 +28,7 @@ class ExtractionTest extends FunSuite {
     assert(Extraction.fahrenheitToCelsius(35.6d) === 2.0d)
   }
 
-  test("localDateWithLocationAndTempInCelsius 3 items with average temp in celsius") {
+  test("localDateWithLocationAndTempInCelsius should return 3 items with temp in celsius") {
     val input = List(
       "010013,,11,25,39.2",
       "724017,,08,11,81.14",
@@ -49,6 +49,21 @@ class ExtractionTest extends FunSuite {
     )
 
     assert(Extraction.localDateWithLocationAndTempInCelsius(input, map, 2017) === expectedValue)
+  }
+
+  test("locationYearlyAverageRecords should return 2 items with average temp") {
+    val input = List(
+      (LocalDate.of(2017, 8, 11), Location(37.35, -78.433), 27.3d),
+      (LocalDate.of(2017, 12, 6), Location(37.358, -78.438), 0d),
+      (LocalDate.of(2017, 1, 29), Location(37.358, -78.438), 2.0d)
+    )
+
+    val expectedValue = Seq(
+      (Location(37.35, -78.433), 27.3),
+      (Location(37.358, -78.438), 1.0)
+    )
+
+    assert(Extraction.locationYearlyAverageRecords(input).toList.diff(expectedValue).isEmpty)
   }
 
 }
