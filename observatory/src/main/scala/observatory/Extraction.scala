@@ -43,9 +43,9 @@ object Extraction {
 
   def stationID2LocationMap(stationFileLines: Iterator[String]): Map[(String, String), Location] = {
     stationFileLines
-      .map(_.split(","))
-      .filter(_.forall(_.nonEmpty))
-      .map { case Array(stnID, wbanID, latitude, longitude) =>
+      .map(_.split(",").toList)
+      .filter(arr => arr.length == 4 && arr.drop(2).forall(_.nonEmpty))
+      .map { case List(stnID, wbanID, latitude, longitude) =>
         ((stnID, wbanID), Location(latitude.toDouble, longitude.toDouble))
       }
       .toMap
@@ -58,17 +58,22 @@ object Extraction {
                                            ): List[(LocalDate, Location, Double)] = {
     temperaturesFileLines
       .map(_.split(","))
-      .filter(arr => arr.forall(_.nonEmpty) && arr(4) != "9999.9")
+      .filter(arr => arr.length == 5 && arr(4) != "9999.9")
       .map { case Array(stnID, wbanID, moth, dayOfMonth, temp) =>
+        (stationId2Location.get((stnID, wbanID)), moth, dayOfMonth, temp)
+      }
+      .filter(_._1.isDefined)
+      .map { case (maybeLocation, moth, dayOfMonth, temp) =>
         (
           LocalDate.of(year, moth.toInt, dayOfMonth.toInt),
-          stationId2Location((stnID, wbanID)),
+          maybeLocation.get,
           fahrenheitToCelsius(temp.toDouble)
         )
       }
       .toList
   }
 
-  private def fahrenheitToCelsius(f: Double): Double = (f - 32.0) * (5.0 / 9.0)
+  def fahrenheitToCelsius(f: Double): Double =
+    ((BigDecimal(f) - BigDecimal(32.0)) * (BigDecimal(5.0) / BigDecimal(9.0))).toDouble
 
 }
