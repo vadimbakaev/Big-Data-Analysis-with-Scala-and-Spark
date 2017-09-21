@@ -2,6 +2,8 @@ package observatory
 
 import java.time.LocalDate
 
+import org.apache.spark.rdd.RDD
+
 import scala.io.Source._
 
 /**
@@ -21,8 +23,8 @@ object Extraction {
                           temperaturesFile: String
                         ): Iterable[(LocalDate, Location, Double)] = {
 
-    val stationFileLines = fromInputStream(ClassLoader.getSystemResourceAsStream(stationsFile)).getLines()
-    val temperaturesFileLines = fromInputStream(ClassLoader.getSystemResourceAsStream(temperaturesFile)).getLines()
+    val stationFileLines: Iterator[String] = getLineIterator(stationsFile)
+    val temperaturesFileLines: Iterator[String] = getLineIterator(temperaturesFile)
 
     val stationId2Location = stationID2LocationMap(stationFileLines)
     localDateWithLocationAndTempInCelsius(temperaturesFileLines, stationId2Location, year)
@@ -80,5 +82,9 @@ object Extraction {
 
   def fahrenheitToCelsius(f: Double): Double =
     ((BigDecimal(f) - BigDecimal(32.0)) * (BigDecimal(5.0) / BigDecimal(9.0))).toDouble
+
+  private def getLineIterator(file: String) = {
+    fromInputStream(ClassLoader.getSystemResourceAsStream(file.replace("/", ""))).getLines()
+  }
 
 }
