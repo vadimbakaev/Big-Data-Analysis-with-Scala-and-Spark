@@ -20,7 +20,42 @@ trait VisualizationTest extends FunSuite with Checkers {
     val to = Location(0d, 0d)
 
     val expectedResult = 8990716d / 6371000d
-    assert(Visualization.greatCircleDistance(from, to) +- 0.001 === expectedResult )
+    assert(Visualization.greatCircleDistance(from, to) +- 0.001 === expectedResult)
+  }
+
+  test("interpolateColor between equidistant points") {
+    val points = Seq(
+      (0d, Color(100, 100, 100)),
+      (1d, Color(0, 0, 0)),
+      (3d, Color(44, 22, 11))
+    )
+
+    assert(Visualization.interpolateColor(points, 0.5d) == Color(50, 50, 50))
+  }
+
+  test("interpolateColor between 2 points") {
+    val points = Seq(
+      (0d, Color(100, 100, 100)),
+      (4d, Color(0, 0, 0))
+    )
+
+    assert(Visualization.interpolateColor(points, 1d) == Color(75, 75, 75))
+  }
+
+  test("interpolateColor no greater point") {
+    val points = Seq(
+      (0d, Color(100, 100, 100))
+    )
+
+    assert(Visualization.interpolateColor(points, 1d) == Color(100, 100, 100))
+  }
+
+  test("interpolateColor no lower point") {
+    val points = Seq(
+      (4d, Color(0, 0, 0))
+    )
+
+    assert(Visualization.interpolateColor(points, 1d) == Color(0, 0, 0))
   }
 
 }

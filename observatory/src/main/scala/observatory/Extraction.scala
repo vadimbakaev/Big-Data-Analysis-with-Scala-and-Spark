@@ -2,8 +2,6 @@ package observatory
 
 import java.time.LocalDate
 
-import org.apache.spark.rdd.RDD
-
 import scala.io.Source._
 
 /**
