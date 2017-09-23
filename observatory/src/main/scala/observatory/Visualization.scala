@@ -1,5 +1,7 @@
 package observatory
 
+import java.lang.Math._
+
 import com.sksamuel.scrimage.{Image, Pixel}
 
 /**
@@ -9,29 +11,48 @@ object Visualization {
 
   /**
     * @param temperatures Known temperatures: pairs containing a location and the temperature at this location
-    * @param location Location where to predict the temperature
+    * @param location     Location where to predict the temperature
     * @return The predicted temperature at `location`
     */
-  def predictTemperature(temperatures: Iterable[(Location, Double)], location: Location): Double = {
+  def predictTemperature(
+                          temperatures: Iterable[(Location, Double)],
+                          location: Location
+                        ): Double = {
+
+    val p = 2
+
     ???
   }
 
   /**
     * @param points Pairs containing a value and its associated color
-    * @param value The value to interpolate
+    * @param value  The value to interpolate
     * @return The color that corresponds to `value`, according to the color scale defined by `points`
     */
-  def interpolateColor(points: Iterable[(Double, Color)], value: Double): Color = {
+  def interpolateColor(
+                        points: Iterable[(Double, Color)],
+                        value: Double
+                      ): Color = {
     ???
   }
 
   /**
     * @param temperatures Known temperatures
-    * @param colors Color scale
+    * @param colors       Color scale
     * @return A 360×180 image where each pixel shows the predicted temperature at its location
     */
-  def visualize(temperatures: Iterable[(Location, Double)], colors: Iterable[(Double, Color)]): Image = {
+  def visualize(
+                 temperatures: Iterable[(Location, Double)],
+                 colors: Iterable[(Double, Color)]
+               ): Image = {
     ???
+  }
+
+  def greatCircleDistance(from: Location, to: Location): Double = {
+    val fromRadians = from.lat.toRadians
+    val toRadians = to.lat.toRadians
+
+    acos(sin(fromRadians) * sin(toRadians) + cos(fromRadians) * cos(toRadians) * cos((to.lon - from.lon).toRadians))
   }
 
 }
