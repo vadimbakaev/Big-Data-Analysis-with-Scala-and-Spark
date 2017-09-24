@@ -49,7 +49,7 @@ object Visualization {
                         points: Iterable[(Double, Color)],
                         value: Double
                       ): Color = {
-    
+
     val (lts, gts) = points.par.partition { case (pointValue, _) => pointValue < value }
     val maybeLower = if (lts.nonEmpty) Some(lts.maxBy(_._1)) else None
     val maybeGrader = if (gts.nonEmpty) Some(gts.minBy(_._1)) else None

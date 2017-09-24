@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 import org.scalatest.FunSuite
 
-class ExtractionTest extends FunSuite {
+trait ExtractionTest extends FunSuite {
 
   test("stationID2LocationMap should return emptyMap") {
     assert(Extraction.stationID2LocationMap(Nil.iterator).isEmpty)
