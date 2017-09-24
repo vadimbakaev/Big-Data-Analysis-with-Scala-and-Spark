@@ -49,9 +49,7 @@ object Visualization {
                         points: Iterable[(Double, Color)],
                         value: Double
                       ): Color = {
-
-    //todo optimize it
-
+    
     val (lts, gts) = points.par.partition { case (pointValue, _) => pointValue < value }
     val maybeLower = if (lts.nonEmpty) Some(lts.maxBy(_._1)) else None
     val maybeGrader = if (gts.nonEmpty) Some(gts.minBy(_._1)) else None
@@ -67,9 +65,9 @@ object Visualization {
         val b = Math.round((left * lowerColor.blue + right * graderColor.blue) / denominator).toInt
 
         Color(
-          if (r > 225) 225 else r,
-          if (g > 225) 225 else g,
-          if (b > 225) 225 else b
+          if (r > 255) 255 else r,
+          if (g > 255) 255 else g,
+          if (b > 255) 255 else b
         )
       case _                                                                =>
         maybeLower.orElse(maybeGrader).map(_._2).get

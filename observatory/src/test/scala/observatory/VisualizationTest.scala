@@ -30,7 +30,7 @@ trait VisualizationTest extends FunSuite with Checkers {
       (3d, Color(44, 22, 11))
     )
 
-    assert(Visualization.interpolateColor(points, 0.5d) == Color(50, 50, 50))
+    assert(Visualization.interpolateColor(points, 0.5d) === Color(50, 50, 50))
   }
 
   test("interpolateColor between 2 points") {
@@ -39,7 +39,7 @@ trait VisualizationTest extends FunSuite with Checkers {
       (4d, Color(0, 0, 0))
     )
 
-    assert(Visualization.interpolateColor(points, 1d) == Color(75, 75, 75))
+    assert(Visualization.interpolateColor(points, 1d) === Color(75, 75, 75))
   }
 
   test("interpolateColor no greater point") {
@@ -47,7 +47,7 @@ trait VisualizationTest extends FunSuite with Checkers {
       (0d, Color(100, 100, 100))
     )
 
-    assert(Visualization.interpolateColor(points, 1d) == Color(100, 100, 100))
+    assert(Visualization.interpolateColor(points, 1d) === Color(100, 100, 100))
   }
 
   test("interpolateColor no lower point") {
@@ -55,7 +55,25 @@ trait VisualizationTest extends FunSuite with Checkers {
       (4d, Color(0, 0, 0))
     )
 
-    assert(Visualization.interpolateColor(points, 1d) == Color(0, 0, 0))
+    assert(Visualization.interpolateColor(points, 1d) === Color(0, 0, 0))
+  }
+
+  test("interpolateColor for 0 distant point greatest point") {
+    val points = Seq(
+      (-100.0, Color(255, 0, 0)),
+      (34.65264354993715, Color(0, 0, 255))
+    )
+
+    assert(Visualization.interpolateColor(points, 34.65264354993715d) === Color(0, 0, 255))
+  }
+
+  test("interpolateColor for 0 distant point lowest point") {
+    val points = Seq(
+      (-100.0, Color(255, 0, 0)),
+      (34.65264354993715, Color(0, 0, 255))
+    )
+
+    assert(Visualization.interpolateColor(points, -100) === Color(255, 0, 0))
   }
 
 }
