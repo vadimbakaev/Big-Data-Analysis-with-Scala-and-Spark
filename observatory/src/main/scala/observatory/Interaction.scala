@@ -2,7 +2,10 @@ package observatory
 
 import java.lang.Math._
 
-import com.sksamuel.scrimage.{Image, Pixel}
+import com.sksamuel.scrimage.{Image, Pixel, RGBColor}
+import observatory.Visualization.{interpolateColor, predictTemperature}
+
+import java.util.concurrent._
 
 /**
   * 3rd milestone: interactive visualization
@@ -39,7 +42,19 @@ object Interaction {
             y: Int
           ): Image = {
 
-    ???
+    val alpha = 127
+    val (w, h) = (256, 256)
+
+    val pixels = for {
+      x1 <- (0 until w).par
+      y1 <- (0 until h).par
+    } yield {
+      val color = interpolateColor(colors, predictTemperature(temperatures, tileLocation(zoom, x, y)))
+
+      Pixel(RGBColor(color.red, color.green, color.blue, alpha))
+    }
+
+    Image(w, h, pixels.toArray)
   }
 
   /**
@@ -54,7 +69,13 @@ object Interaction {
                            yearlyData: Iterable[(Int, Data)],
                            generateImage: (Int, Int, Int, Int, Data) => Unit
                          ): Unit = {
-    ???
+    for {
+      (year, data) <- yearlyData
+      zoom <- 0 to 3
+      x <- 0 to 1
+      y <- 0 to 1
+    } generateImage(year, zoom, x, y, data)
+
   }
 
 }

@@ -5,7 +5,8 @@ import java.time.LocalDate
 
 object Main extends App {
 
-  private val data: Iterable[(LocalDate, Location, Double)] = Extraction.locateTemperatures(2015, "/stations.csv", "/2015.csv")
+  private val year                                          = 2015
+  private val data: Iterable[(LocalDate, Location, Double)] = Extraction.locateTemperatures(year, "/stations.csv", "/2015.csv")
   private val tepleratures                                  = Extraction.locationYearlyAverageRecords(data)
   private val colors                                        = Map(
     (60d, Color(225, 225, 225)),
@@ -17,6 +18,12 @@ object Main extends App {
     (-50d, Color(33, 0, 107)),
     (-60d, Color(0, 0, 0))
   )
-  private val image                                         = Visualization.visualize(tepleratures, colors)
-  image.output(new File("target/some-image.png"))
+  private val zoom                                          = 1
+  private val x                                             = 1
+  private val y                                             = 0
+  //  private val image                                         = Visualization.visualize(tepleratures, colors)
+  private val image                                         = Interaction.tile(tepleratures, colors, zoom, x, y)
+  private val file = new File(s"target/temperatures/$year/$zoom/$x-$y.png")
+  file.createNewFile()
+  image.output(file)
 }

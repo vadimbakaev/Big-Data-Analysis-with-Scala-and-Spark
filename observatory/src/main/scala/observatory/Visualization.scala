@@ -19,8 +19,8 @@ object Visualization {
                           location: Location
                         ): Double = {
 
-    require(location.lon >= -180 && location.lon <= 179, s"Invalid Location $location")
-    require(location.lat <= 90 && location.lat >= -89, s"Invalid Location $location")
+//    require(location.lon >= -180 && location.lon <= 179, s"Invalid Location $location")
+//    require(location.lat <= 90 && location.lat >= -89, s"Invalid Location $location")
 
     val powerParameter = 5
     val distance2Temperature = temperatures.par.map { case (toLocation, temperature) =>
