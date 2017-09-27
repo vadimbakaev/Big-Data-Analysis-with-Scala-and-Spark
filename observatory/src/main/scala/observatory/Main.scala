@@ -19,8 +19,8 @@ object Main extends App {
     (-60d, Color(0, 0, 0))
   )
   private val zoom                                          = 1
-  private val x                                             = 1
-  private val y                                             = 0
+  private val x                                             = 0
+  private val y                                             = 1
   //  private val image                                         = Visualization.visualize(tepleratures, colors)
   private val image                                         = Interaction.tile(tepleratures, colors, zoom, x, y)
   private val file = new File(s"target/temperatures/$year/$zoom/$x-$y.png")
