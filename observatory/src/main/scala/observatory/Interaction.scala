@@ -75,11 +75,13 @@ object Interaction {
                            generateImage: (Int, Int, Int, Int, Data) => Unit
                          ): Unit = {
     for {
-      (year, data) <- yearlyData
-      zoom         <- 0 to 3
-      x            <- 0 to 1
-      y            <- 0 to 1
-    } generateImage(year, zoom, x, y, data)
+      (year, data) <- yearlyData.par
+      zoom         <- (0 to 3).par
+      y            <- (0 until pow(2, zoom).toInt).par
+      x            <- (0 until pow(2, zoom).toInt).par
+    } {
+      generateImage(year, zoom, x, y, data)
+    }
 
   }
 

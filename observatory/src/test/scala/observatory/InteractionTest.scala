@@ -25,7 +25,7 @@ trait InteractionTest extends FunSuite with Checkers {
     assert(Interaction.tileLocation(256, 0, 0) === expectedLocation)
   }
 
-  test("tileLocation of zoom 0, x 0 and y 0") {
+  test("tileLocation of zoom 0, x 1 and y 0") {
     val expectedLocation = Location(85.0511287798066, 180.0)
 
     assert(Interaction.tileLocation(0, 1, 0) === expectedLocation)
