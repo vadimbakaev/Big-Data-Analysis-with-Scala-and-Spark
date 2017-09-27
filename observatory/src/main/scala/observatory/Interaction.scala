@@ -44,12 +44,17 @@ object Interaction {
 
     val alpha = 127
     val (w, h) = (256, 256)
+    val fromX = x * w
+    val toX = fromX + w
+    val fromY = y * h
+    val toY = fromY + h
 
     val pixels = for {
-      x1 <- (0 until w).par
-      y1 <- (0 until h).par
+      y1 <- (fromY until toY).par
+      x1 <- (fromX until toX).par
     } yield {
-      val color = interpolateColor(colors, predictTemperature(temperatures, tileLocation(zoom, x, y)))
+      val maxZoom = zoom + 8
+      val color = interpolateColor(colors, predictTemperature(temperatures, tileLocation(maxZoom, x1, y1)))
 
       Pixel(RGBColor(color.red, color.green, color.blue, alpha))
     }
@@ -71,9 +76,9 @@ object Interaction {
                          ): Unit = {
     for {
       (year, data) <- yearlyData
-      zoom <- 0 to 3
-      x <- 0 to 1
-      y <- 0 to 1
+      zoom         <- 0 to 3
+      x            <- 0 to 1
+      y            <- 0 to 1
     } generateImage(year, zoom, x, y, data)
 
   }
