@@ -19,21 +19,21 @@ object Visualization {
                           location: Location
                         ): Double = {
 
-    val powerParameter = 5
+    val powerParameter = 6
     val distance2Temperature = temperatures.par.map { case (toLocation, temperature) =>
       (greatCircleDistance(location, toLocation), temperature)
     }
 
     distance2Temperature.find(_._1 == 0).map(_._2).getOrElse {
       val (numerator, denominator) =
-        distance2Temperature.filter(!_._1.isNaN).foldLeft((BigDecimal.valueOf(0), BigDecimal.valueOf(0))) {
+        distance2Temperature.filter(!_._1.isNaN).foldLeft((0d, 0d)) {
           case ((leftAcc, rightAcc), (distance, temperature)) =>
-            val weight = BigDecimal.valueOf(1) / BigDecimal.valueOf(Math.pow(distance, powerParameter))
+            val weight = 1d / Math.pow(distance, powerParameter)
 
             (leftAcc + weight * temperature, rightAcc + weight)
         }
 
-      (numerator / denominator).toDouble
+      numerator / denominator
     }
   }
 

@@ -3,8 +3,6 @@ package observatory
 import org.scalatest.FunSuite
 import org.scalatest.prop.Checkers
 
-//import scala.collection.concurrent.TrieMap
-
 trait InteractionTest extends FunSuite with Checkers {
 
   test("tileLocation of zoom 0, x 0 and y 0") {

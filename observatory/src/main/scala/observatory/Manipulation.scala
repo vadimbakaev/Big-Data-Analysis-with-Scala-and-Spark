@@ -1,5 +1,7 @@
 package observatory
 
+import observatory.Visualization._
+
 /**
   * 4th milestone: value-added information
   */
@@ -13,8 +15,14 @@ object Manipulation {
   def makeGrid(
                 temperatures: Iterable[(Location, Double)]
               ): (Int, Int) => Double = {
-    case (latitude, longitude) =>
-      Visualization.predictTemperature(temperatures, Location(latitude, longitude))
+    (latitude, longitude) => {
+      require(latitude >= -89)
+      require(latitude <= 90)
+      require(longitude >= -180)
+      require(longitude <= 179)
+
+      predictTemperature(temperatures, Location(latitude, longitude))
+    }
   }
 
   /**
@@ -25,7 +33,7 @@ object Manipulation {
   def average(
                temperaturess: Iterable[Iterable[(Location, Double)]]
              ): (Int, Int) => Double = {
-    case (latitude, longitude) => temperaturess.map(makeGrid(_)(latitude, longitude)).sum / temperaturess.size
+    (latitude, longitude) => temperaturess.map(makeGrid(_)(latitude, longitude)).sum / temperaturess.size
   }
 
   /**
@@ -37,8 +45,7 @@ object Manipulation {
                  temperatures: Iterable[(Location, Double)],
                  normals: (Int, Int) => Double
                ): (Int, Int) => Double = {
-    case (latitude, longitude) =>
-      makeGrid(temperatures)(latitude, longitude) - normals(latitude, longitude)
+    (latitude, longitude) => makeGrid(temperatures)(latitude, longitude) - normals(latitude, longitude)
   }
 
 
